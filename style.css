@@ -1,0 +1,61 @@
+@font-face {
+    font-family: 'anudawregular';
+    src: url('fonts/ANUDRG__-webfont.eot');
+    src: url('fonts/ANUDRG__-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/ANUDRG__-webfont.woff2') format('woff2'),
+         url('fonts/ANUDRG__-webfont.woff') format('woff'),
+         url('fonts/ANUDRG__-webfont.ttf') format('truetype'),
+         url('fonts/ANUDRG__-webfont.svg#anudawregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.change{
+color:blue;
+text-align:center;
+background-image: url(images/logo_orinoco.png);
+background-size: contain; /*definit la taille de l'image d'arrière plan*/
+background-repeat: no-repeat;
+}
+
+.panier{
+    padding-right: 0.6rem;
+    padding-bottom: 1rem;
+}
+
+#orinoco{
+    font-family: 'anudawregular';
+    font-size: 1.8rem;
+}
+
+.bouton{
+    margin-left: 1.6rem;
+    margin-top: 2rem;
+}
+
+.bouton a {
+    display:block;
+    width:170px;
+    line-height:45px;
+    text-align:center;
+    background-color: rgb(40, 167, 57);
+    color:white;
+    font-weight: bold;
+    text-decoration:none;
+    border-radius: 10px;
+    }
+    .bouton a:hover {
+    background-color: rgb(40, 201, 48);
+    box-shadow: 3px 3px 6px rgb(99, 96, 96);
+
+    }
+
+
+@media all and (max-width: 420px){
+/*Breakpoint mobile*/
+    #orinoco{
+        font-size: 1.3rem;
+    }
+}
+
+
