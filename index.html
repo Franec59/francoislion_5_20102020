@@ -43,123 +43,24 @@
 
         <h1 class="my-4">Nos offres</h1>
         <div class="list-group">
-          <a href="index.html" class="list-group-item">Caméra vintage</a>
-          <a href="#" class="list-group-item">Ours en peluche</a>
-          <a href="#" class="list-group-item">Meubles en chêne</a>
+          <a href="index.html" class="list-group-item" id="camera">Caméras vintage</a>
+          <a href="#" class="list-group-item" id="peluche">Ours en peluche</a>
+          <a href="#" class="list-group-item" id="table">Meubles en chêne</a>
         </div>
 
       </div>
       <!-- /.col-lg-3 -->
 
       <!--Partie droite page de vue produits-->
-      <div class="col-lg-9 mt-4">
+      <div class="col-lg-9 mt-4" id="page">
 
         <div class=" jumbotron jumbotron-fluid change mt-3">
           <div class="container">
-        
           </div>
         </div>
         
-        <!--card des produits-->
-        <div class="row">
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="fichep1.html"><img class="card-img-top" src="images/Vcam_1.jpg" alt="camera vintage 1"></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="fichep1.html">Fujifilm Instax Wide 300<i class="bi bi-arrow-left"></i></a>
-                </h4>
-                <h5>125,00€</h5>
-                <p class="card-text">Appareil Photo Argentique Instantané Noir</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9733;</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="fichep2.html"><img class="card-img-top" src="images/Vcam_2.jpg" alt="camera vintage 2"></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="fichep2.html">TARION TNS-L1 avec Sangle</a>
-                </h4>
-                <h5>137,00€</h5>
-                <p class="card-text">Appreil Photo Réglable en Cuir Style Vintage</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9734; &#9734; &#9734;</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="images/Vcam_3.jpg" alt="camera vintage 3"></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="#">Tong Yue Vintage</a>
-                </h4>
-                <h5>99,00€</h5>
-                <p class="card-text">Vieux Mode Résine Camera Style européen Ornement pour Home Bar Décoration</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9734; &#9734;</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="images/Vcam_4.jpg" alt="camera vintage 4"></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="#">Gearmax® Instax Mini 90</a>
-                </h4>
-                <h5>155,00€</h5>
-                <p class="card-text">Gearmax®(Noir) avec Sac bandoulière caméra Voyage Vintage Cuir</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="images/Vcam_5.jpg" alt="camera vintage 5"></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="#">Fujifilm Instax Mini 60</a>
-                </h4>
-                <h5>110,00€</h5>
-                <p class="card-text">Neo Classic Appareil Photo Instantané Marron Clair</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9734; &#9734; &#9734; &#9734;</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 bg-warning">
-              <a href="#"><img class="card-img-top" src="images/teddy_1.jpg" alt="ours en peluche"></a>
-              <div class="card-body">
-                <h4 class="card-title">
-                  <a href="#">Exclusivités Orinoco</a>
-                </h4>
-                <h5>En savoir plus ...</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9733;</small>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <!-- /.row -->
+        <!--emplacement pour les fiches produits-->
+        <div class="row" id="ficheProduit"></div>
 
       </div>
       <!-- /.col-lg-9 -->
@@ -178,6 +79,10 @@
     <!-- /.container -->
   </footer>
 
+<!--<script src="js/fichecam.js"></script>-->
+<script src="js/pages.js"></script>
+<script src="js/fichetable.js"></script>
+<script src="js/ficheours.js"></script>
 </body>
 
 </html>

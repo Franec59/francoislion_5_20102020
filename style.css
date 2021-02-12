@@ -2,7 +2,6 @@
     font-family: 'anudawregular';
     src: url('fonts/ANUDRG__-webfont.eot');
     src: url('fonts/ANUDRG__-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/ANUDRG__-webfont.woff2') format('woff2'),
          url('fonts/ANUDRG__-webfont.woff') format('woff'),
          url('fonts/ANUDRG__-webfont.ttf') format('truetype'),
          url('fonts/ANUDRG__-webfont.svg#anudawregular') format('svg');
@@ -50,6 +49,11 @@ background-repeat: no-repeat;
 
     }
 
+#page{
+min-height: 650px;
+
+
+}
 
 @media all and (max-width: 420px){
 /*Breakpoint mobile*/

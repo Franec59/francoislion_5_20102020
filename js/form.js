@@ -136,3 +136,21 @@ const validVille = function(varVille){
         valideville.style.color = "red";
     } 
 };
+
+//stocker le formulaire saisi dans le localstorage
+//=================================================
+
+let btnEnvoyer = document.querySelector("button");
+console.log(document.querySelector("button"));
+
+
+btnEnvoyer.addEventListener("click", ()=>{
+localStorage.setItem("prenom", document.getElementById("prenom").value);
+localStorage.setItem("nom", document.getElementById("nom").value);
+localStorage.setItem("adresse", document.getElementById("adresse").value);
+localStorage.setItem("code postal", document.getElementById("codep").value);
+localStorage.setItem("ville", document.getElementById("ville").value);
+localStorage.setItem("Mail", document.getElementById("email").value);
+
+});
+
