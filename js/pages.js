@@ -1,7 +1,17 @@
 //page cameras
 //======================================================
 
-//requete
+//requete pour aller récuperer les infos sur les cameras
+//=======================================================
+class Cam {
+    constructor(name, price, description, imageUrl, id) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.imageUrl = imageUrl;
+    }
+}
 
 var xhr = new XMLHttpRequest();
 
@@ -13,24 +23,16 @@ xhr.onreadystatechange = function(){
 
         let camerasUnparsed = this.response;
 
-        class Cam {
-            constructor(name, price, description, imageUrl) {
-                this.name = name;
-                this.price = price;
-                this.description = description;
-                this.imageUrl = imageUrl;
-            }
-        }
+        
         var cameras = [];
         camerasUnparsed.forEach ( aCameraUnparsed => {
-            const cam = new Cam(aCameraUnparsed.name, aCameraUnparsed.price, aCameraUnparsed.description, aCameraUnparsed.imageUrl, aCameraUnparsed._id, );
+            const cam = new Cam(aCameraUnparsed.name, aCameraUnparsed.price, aCameraUnparsed.description, aCameraUnparsed.imageUrl, aCameraUnparsed._id); //bien mettre le_ avant id
             cameras.push(cam)
         })
 
         cameras.forEach( ref => {
             createFiche(ref);
         })
-
         
     } else if (this.readyState == 4 && this.status == 404){
         alert("erreur 404 !");
@@ -43,6 +45,9 @@ xhr.responseType = "json";
 xhr.send();
 
 
+//fonction pour créer la page avec toutes les cameras
+//======================================================
+
 function createFiche(ref) {
 
     document.getElementById("camera").addEventListener("click", function(event){
@@ -51,21 +56,21 @@ function createFiche(ref) {
     
     const newFiche = document.createElement("div");
     newFiche.classList = "col-lg-4 col-md-6 mb-4";
-    let newfiche = document.getElementById("ficheProduit");
-    ficheProduit.appendChild(newFiche);
+    let newfiche = document.getElementById("pageProduit");
+    pageProduit.appendChild(newFiche);
 
     const newCard = document.createElement("div");
     newCard.classList = "card h-100";
     newFiche.appendChild(newCard);
 
     const lienA = document.createElement("a");
-    lienA.href = "fichep1.html";
+    lienA.href = "ficheproduit.html?productId=" + ref.id;
     newCard.appendChild(lienA);
 
     const imageCard = document.createElement("img");
     imageCard.classList = "card-img-top";
     imageCard.src = ref.imageUrl;
-    imageCard.setAttribute("alt", "nom de l'image");
+    imageCard.setAttribute("alt", ref.name);
     lienA.appendChild(imageCard);
 
     const newCardBody = document.createElement("div");
@@ -92,7 +97,7 @@ function createFiche(ref) {
 
     const lienB = document.createElement("a");
     lienB.classList = "btn btn-primary";
-    lienB.href = "fichep1.html";
+    lienB.href = "ficheproduit.html?productId=" + ref.id; // en utilisant URLSeachParams
     lienB.setAttribute("role", "button");
     lienB.textContent = "Voir le produit";
     newCardFooter.appendChild(lienB);
@@ -101,17 +106,3 @@ function createFiche(ref) {
 
     })
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-        

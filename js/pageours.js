@@ -25,8 +25,8 @@ document.getElementById("peluche").addEventListener("click", function(){
     
     const newFicheOurs = document.createElement("div");
     newFicheOurs.classList = "col-lg-4 col-md-6 mb-4";
-    let newficheOurs = document.getElementById("ficheProduit");
-    ficheProduit.appendChild(newFicheOurs);
+    let newficheOurs = document.getElementById("pageProduit");
+    pageProduit.appendChild(newFicheOurs);
     
     const newCardOurs = document.createElement("div");
     newCardOurs.classList = "card h-100";

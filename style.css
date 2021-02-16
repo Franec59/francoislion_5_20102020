@@ -49,11 +49,11 @@ background-repeat: no-repeat;
 
     }
 
-#page{
+.page{
 min-height: 650px;
 
-
 }
+
 
 @media all and (max-width: 420px){
 /*Breakpoint mobile*/

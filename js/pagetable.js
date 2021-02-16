@@ -24,10 +24,12 @@ function createFicheOak(refOak){
 
     document.getElementById("table").addEventListener("click", function (){
 
+    //document.location.reload("index.html");
+
     const newFicheOak = document.createElement("div");
     newFicheOak.classList = "col-lg-4 col-md-6 mb-4";
-    let newficheOak = document.getElementById("ficheProduit");
-    ficheProduit.appendChild(newFicheOak);
+    let newficheOak = document.getElementById("pageProduit");
+    pageProduit.appendChild(newFicheOak);
     
     const newCardOak = document.createElement("div");
     newCardOak.classList = "card h-100";
@@ -62,7 +64,7 @@ function createFicheOak(refOak){
     newCardFooterOak.appendChild(smallOak);
     
     return newFicheOak;
-
+    
     })
 };  
 
