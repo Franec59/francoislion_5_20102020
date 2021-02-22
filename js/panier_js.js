@@ -1,3 +1,63 @@
+//recuperation des données depuis le local storage pour les afficher dans le panier
+//=====================================================================================
+
+function recupPanier(){
+
+    let stockArticle = localStorage.getItem("panier");
+    let objArticle = JSON.parse(stockArticle);
+        //console.log(objArticle);
+
+    objArticle.forEach(tab => {
+        createTableau (tab);
+    });
+
+}
+recupPanier();
+
+function createTableau (tab){
+
+    const newTr = document.createElement("tr");
+    let ligne = document.querySelector("tbody");
+    ligne.appendChild(newTr);
+
+    const newTh = document.createElement("th");
+    newTh.setAttribute("scope", "row")
+    newTh.innerText = "-";
+    newTr.appendChild(newTh);
+
+    const newTd = document.createElement("td");
+    newTd.innerHTML = tab.name;
+    newTr.appendChild(newTd);
+
+    const newTd2 = document.createElement("td");
+    newTd2.innerHTML = tab.price;
+    newTr.appendChild(newTd2);
+
+    const newTd3 = document.createElement("td");
+    newTr.appendChild(newTd3);
+
+    const newInput = document.createElement("input");
+    newInput.classList = "btn btn-danger btn-sm";
+    newInput.setAttribute("type", "reset");
+    newInput.setAttribute("value", "Supprimer");
+    newTd3.appendChild(newInput);
+
+/*
+//bouton supprimer dans le tableau panier
+//==========================================
+const lignePanier = document.querySelectorAll(".btn-danger");
+//console.log(lignePanier);
+
+for (let i = 0; i < lignePanier.length; i++){
+lignePanier[i].addEventListener ("click", ()=>{
+    lignePanier[i].parentNode.parentNode.parentNode.removeChild(newTr);
+    localStorage.removeItem("panier");//comment selectionner l'index dans la clé ?
+})
+};
+*/
+
+}//fin de la fonction createTableau
+
 //validation mail
 //======================================================
 let form = document.getElementById("loginForm");
@@ -68,7 +128,7 @@ const validNom = function(varNom){
     } 
 };
 
-//validation numero et voie
+//validation address
 //======================================================
 let form4 = document.getElementById("loginForm");
 form4.adresse.addEventListener("change", function(){
@@ -88,29 +148,6 @@ const validAdresse = function(varAdresse){
     }else {
         valideadresse.textContent = "Adresse non valide";
         valideadresse.style.color = "red";
-    } 
-};
-
-//validation code postal
-//======================================================
-let form5 = document.getElementById("loginForm");
-form5.codep.addEventListener("change", function(){
-    validCodep(this)
-});
-
-const validCodep = function(varCodep){
-    let codepRegExp = new RegExp("^(([0-9][0-9])|(9[0-5])|(2[ab]))[0-9]{3}$", "g");
-
-    //ligne de test
-    let testCodep = codepRegExp.test(varCodep.value)
-    let validCodep = document.getElementById("validecodep");
-
-    if (testCodep){
-        validecodep.textContent = "Code postal valide";
-        validecodep.style.color = "green";
-    }else {
-        validecodep.textContent = "Code postal non valide";
-        validecodep.style.color = "red";
     } 
 };
 
@@ -137,20 +174,73 @@ const validVille = function(varVille){
     } 
 };
 
+//validation finale de la commande
+//=================================================
+
+document.querySelector("button").addEventListener("click", (e)=>{
+
+    e.preventDefault();
+
+
 //stocker le formulaire saisi dans le localstorage
 //=================================================
 
-let btnEnvoyer = document.querySelector("button");
-console.log(document.querySelector("button"));
-
-
-btnEnvoyer.addEventListener("click", ()=>{
 localStorage.setItem("prenom", document.getElementById("prenom").value);
 localStorage.setItem("nom", document.getElementById("nom").value);
 localStorage.setItem("adresse", document.getElementById("adresse").value);
-localStorage.setItem("code postal", document.getElementById("codep").value);
 localStorage.setItem("ville", document.getElementById("ville").value);
 localStorage.setItem("Mail", document.getElementById("email").value);
 
-});
 
+//recuperation du panier et du formulaire depuis le local storage pour les stocker dans un objet
+//===============================================================================================
+
+const contact = {
+    firstName : localStorage.getItem("prenom"),
+    lastName : localStorage.getItem("nom"),
+    address : localStorage.getItem("adresse"),
+    city : localStorage.getItem("ville"),
+    email : localStorage.getItem("Mail") ,
+    //product_id : localStorage.getItem("panier_id")
+}
+
+console.log(contact);
+
+let panier = localStorage.getItem("panier_id");
+const productPanier = JSON.parse(panier);
+
+const product_id = productPanier;
+
+
+data = contact + product_id;
+console.log(data);
+
+//envoyer l'objet sur le serveur 
+//===============================
+
+
+var xhr2 = new XMLHttpRequest();
+/*
+xhr2.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var retour = this.response;
+        console.log(this.response)
+    
+    } else if (this.readyState == 4 && this.status == 404){
+        alert("erreur 404 !");
+    }
+};
+*/
+xhr2.open("POST", "http://localhost:3000/api/cameras/order", true);
+xhr2.setRequestHeader("Content-Type", "application/json");
+//xhr2.send(JSON.stringify(contact + product_id));
+//xhr2.send(JSON.stringify(data));
+xhr2.send(data);
+
+
+//localStorage.clear();
+//window.location.assign(url="confirmation.html");
+
+
+//fin de la fonction
+});

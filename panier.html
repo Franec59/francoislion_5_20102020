@@ -64,20 +64,53 @@
             <div class="col-lg-9 col-md-6 mb-4">
                 <h4>Récapitulatif de votre commande</h4>
 
-        <!--Récapitulatif de la commande-->
-                <div class="alert alert-warning mt-3" role="alert">
-                  Votre commande
-                </div>
+        <!--tableau avec le récapitulatif du panier-->
+        <!--=========================================================-->
+                <table class="table mt-3">
+                  <thead>
+                    <tr class="table-secondary">
+                      <th scope="col">#</th>
+                      <th scope="col">Articles</th>
+                      <!--<th scope="col">Quantités</th>-->
+                      <th scope="col">Prix</th>
+                      <th scope="col">Supprimer</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!--<tr>
+                      <th scope="row">1</th>
+                      <td class="nomArticle"></td>
+                      <td>1</td>
+                      <td class="prix"></td>
+                      <td><input class="btn btn-danger btn-sm" type="reset" value="Supprimer"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>camera 2</td>
+                      <td>1</td>
+                      <td>60€</td>
+                      <td>Supprimer</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>camera 3</td>
+                      <td>1</td>
+                      <td>75€</td>
+                      <td>Supprimer</td>
+                    </tr>-->
+                  </tbody>
+                  <tfoot class="table-warning">
+                    <th scope="row">Total</th>
+                      <td></td>
+                      <td id="somme"></td>
+                      <td></td>
+                  </tfoot>
+                </table>
 
-        <!--Récapitulatif du prix-->
-                <div class="alert alert-warning" role="alert">
-                  Prix
-                </div>
-
-<!--partie formulaire -->
-              
+      <!--partie formulaire -->
+      <!--=========================================================-->             
               <form action="" method="POST" id="loginForm">
-              <h4>Créer votre compte</h4>
+              <h4 class="mt-5">Créer votre compte</h4>
 
                 <!--Prenom-->
                 <div class="mt-3">
@@ -95,16 +128,9 @@
 
                 <!--Adresse N° et voie-->
                 <div class="mt-3">
-                  <label for="adresse" class="form-label">Numero et voie</label>
+                  <label for="adresse" class="form-label">Votre adresse</label>
                   <input type="text" name="adresse" class="form-control" id="adresse" required="required" aria-describedby="emailHelp">
                   <small id="valideadresse"></small>
-                </div>
-
-                <!--Code postal-->
-                <div class="mt-3">
-                  <label for="codep" class="form-label">Code postal</label>
-                  <input type="text" name="codep" class="form-control" id="codep" required="required" aria-describedby="emailHelp">
-                  <small id="validecodep"></small>
                 </div>
 
                 <!--Ville-->
@@ -115,26 +141,23 @@
                 </div>
                 
                 <!--email-->
-                <div class="mt-3">
+                  <div class="mt-3">
                     <label for="email" class="form-label">Votre email</label>
                     <input type="email" name="email" class="form-control" id="email" required="required" aria-describedby="emailHelp">
                     <small id="validtext"></small>
                   </div>
 
-                  <div class="mt-4">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                      <label class="form-check-label" for="invalidCheck">
-                        Accepter les termes et les conditions.
-                      </label>
-                      <div class="invalid-feedback">
-                        Accepter les termes et les conditions.
-                      </div>
-                    </div>
+                  <!--
+                  <div class="mt-3">
+                    <a class="btn btn-primary envoyer" href="confirmation.html" role="button">Valider votre commande</a>
                   </div>
+                  -->
+                
                   <div class="mt-3">
                     <button class="btn btn-primary" type="submit">Valider votre commande</button>
                   </div>
+                
+
               </form>
 
             </div>
@@ -159,7 +182,7 @@
   </footer>
 
 
-  <script src="js/form.js"></script>
+  <script src="js/panier_js.js"></script>
 </body>
 
 </html>

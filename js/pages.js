@@ -56,8 +56,8 @@ function createFiche(ref) {
     
     const newFiche = document.createElement("div");
     newFiche.classList = "col-lg-4 col-md-6 mb-4";
-    let newfiche = document.getElementById("pageProduit");
-    pageProduit.appendChild(newFiche);
+    let fiche = document.getElementById("pageProduit");
+    fiche.appendChild(newFiche);
 
     const newCard = document.createElement("div");
     newCard.classList = "card h-100";

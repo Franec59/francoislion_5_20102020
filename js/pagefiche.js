@@ -1,7 +1,6 @@
 //page des fiches produits
 //=========================================
 
-
 //je récupère l'Id du produit
 //=====================================
 const params = new URLSearchParams(window.location.search).get('productId')
@@ -10,16 +9,6 @@ console.log(params);
 
 // je crée une nouvelle requete vers le serveur pour récupérer les infos sur le produit
 //=======================================================================================
-class Cam {
-    constructor(name, price, description, imageUrl, id, lenses) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.imageUrl = imageUrl;
-        this.lenses = lenses;
-    }
-}
 
 var requetProduct = new XMLHttpRequest();
 
@@ -27,20 +16,9 @@ requetProduct.onreadystatechange = function(){
     
     if (this.readyState == 4 && this.status == 200) {
         
-        let camerasUnparsed = this.response;
-
-        var cameras = [];
-        camerasUnparsed.forEach ( aCameraUnparsed => {
-            const cam = new Cam(aCameraUnparsed.name, aCameraUnparsed.price, aCameraUnparsed.description, aCameraUnparsed.imageUrl, aCameraUnparsed._id, aCameraUnparsed.lenses); //bien mettre le_ avant id
-            cameras.push(cam)
-        })
-        
-        const found = cameras.find(prod => prod.id === params);
+        const found = this.response
         console.log(found);
-        console.log(found.name);
-        console.log(found.lenses);
-        
-        
+        console.log(found._id);
         
 //création de la fiche avec le produit ( 2 parties )
 //==============================================================
@@ -48,7 +26,7 @@ requetProduct.onreadystatechange = function(){
 //1ère partie de la fiche produit ( card gauche)
 const newFicheProduit = document.createElement("div");
 newFicheProduit.classList = "col-lg-5 col-md-6 mb-4";
-let newficheProduit = document.getElementById("ficheProduit");
+let ficheProduit = document.getElementById("ficheProduit");
 ficheProduit.appendChild(newFicheProduit);
 
 const newCardProduit = document.createElement("div");
@@ -140,27 +118,68 @@ if (found.lenses[2] == null){
 }
 btn_option.appendChild(option4);
 
-
 const bouton = document.createElement("div");
 bouton.classList = "mt-5";
 newCardBodyP2.appendChild(bouton);
 
 const btn_ajouter = document.createElement("a");
-btn_ajouter.classList = "btn btn-success mt-5";
+btn_ajouter.classList = "btn btn-success mt-5 btnAjout";
 btn_ajouter.href = "#";
 btn_ajouter.setAttribute("role", "button");
 btn_ajouter.textContent = "Ajouter au panier";
 bouton.appendChild(btn_ajouter);
 
 
+//partie ajouter le produit au panier
+//=============================================
+
+function ajoutAuPanier(){
+
+    document.querySelector(".btnAjout").addEventListener("click", function (e){
+        
+        e.preventDefault();
+        
+        //panier complet
+        let panierStringified = localStorage.getItem("panier");
+        var myBasket = [] 
+        if (panierStringified) {
+            myBasket = JSON.parse(panierStringified)
+        }
+        let objArticle = {
+            _id : found._id,
+            name : found.name,
+            price : found.price
+        }
+        
+        myBasket.push(objArticle);
+        localStorage.setItem("panier", JSON.stringify(myBasket));
+        
+        //panier id
+        let panierId = localStorage.getItem("panier_id");
+        var myBasketId = [] 
+        if (panierId) {
+            myBasketId = JSON.parse(panierId)
+        }
+        let objId = {
+            _id : found._id,
+            
+        }
+        
+        myBasketId.push(objId);
+        localStorage.setItem("panier_id", JSON.stringify(myBasketId));
+
+    })  
+}
+ajoutAuPanier();
+
 //reprise du code ======================================
 
     } else if (this.readyState == 4 && this.status == 404){
         alert("erreur 404 !");
     }
-
 };
 
-requetProduct.open("GET", "http://localhost:3000/api/cameras", true);
+requetProduct.open("GET", "http://localhost:3000/api/cameras/"+params, true);
 requetProduct.responseType = "json";
 requetProduct.send();
+
