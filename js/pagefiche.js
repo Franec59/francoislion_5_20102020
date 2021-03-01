@@ -139,7 +139,7 @@ function ajoutAuPanier(){
         
         e.preventDefault();
         
-        //panier complet
+        //panier
         let panierStringified = localStorage.getItem("panier");
         var myBasket = [] 
         if (panierStringified) {
@@ -148,26 +148,14 @@ function ajoutAuPanier(){
         let objArticle = {
             _id : found._id,
             name : found.name,
-            price : found.price
+            price : found.price,
+            description : found.description,
+            imageUrl : found.imageUrl
         }
         
         myBasket.push(objArticle);
         localStorage.setItem("panier", JSON.stringify(myBasket));
         
-        //panier id
-        let panierId = localStorage.getItem("panier_id");
-        var myBasketId = [] 
-        if (panierId) {
-            myBasketId = JSON.parse(panierId)
-        }
-        let objId = {
-            _id : found._id,
-            
-        }
-        
-        myBasketId.push(objId);
-        localStorage.setItem("panier_id", JSON.stringify(myBasketId));
-
     })  
 }
 ajoutAuPanier();

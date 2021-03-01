@@ -5,24 +5,25 @@ function recupPanier(){
 
     let stockArticle = localStorage.getItem("panier");
     let objArticle = JSON.parse(stockArticle);
-        //console.log(objArticle);
 
-    objArticle.forEach(tab => {
-        createTableau (tab);
+    objArticle.forEach((tab, i) => {
+        createTableau (tab, i);
+        
     });
 
 }
 recupPanier();
 
-function createTableau (tab){
+function createTableau (tab, index){
 
     const newTr = document.createElement("tr");
+    newTr.classList = `.row-${index}`;
     let ligne = document.querySelector("tbody");
     ligne.appendChild(newTr);
 
     const newTh = document.createElement("th");
     newTh.setAttribute("scope", "row")
-    newTh.innerText = "-";
+    newTh.innerText = index + 1;
     newTr.appendChild(newTh);
 
     const newTd = document.createElement("td");
@@ -30,30 +31,72 @@ function createTableau (tab){
     newTr.appendChild(newTd);
 
     const newTd2 = document.createElement("td");
-    newTd2.innerHTML = tab.price;
+    newTd2.classList = "prix";
+    newTd2.innerHTML = tab.price/100;
     newTr.appendChild(newTd2);
 
     const newTd3 = document.createElement("td");
     newTr.appendChild(newTd3);
 
     const newInput = document.createElement("input");
-    newInput.classList = "btn btn-danger btn-sm";
+    newInput.classList = `.row-remove-button-${index} btn btn-danger btn-sm`;
     newInput.setAttribute("type", "reset");
     newInput.setAttribute("value", "Supprimer");
+    newInput.addEventListener('click', () => {
+        // Here you can work with `tab` for removing it from LocalStorage
+        // And refresh all table ;)
+        
+        //let delByIndex = +index;
+        //console.log(delByIndex);
+        
+        let selectBasket = localStorage.getItem("panier");
+        let initialBasket = JSON.parse(selectBasket);
+        
+        let delItem = initialBasket.splice(1);
+        console.log(delItem);
+        
+        const returnBasket = JSON.stringify(delItem);
+        const newBasket = localStorage.setItem("panier", returnBasket);
+        
+        location.reload();
+        
+        
+        //refreshTable()
+    })
+
     newTd3.appendChild(newInput);
 
-/*
-//bouton supprimer dans le tableau panier
-//==========================================
-const lignePanier = document.querySelectorAll(".btn-danger");
-//console.log(lignePanier);
 
-for (let i = 0; i < lignePanier.length; i++){
-lignePanier[i].addEventListener ("click", ()=>{
-    lignePanier[i].parentNode.parentNode.parentNode.removeChild(newTr);
-    localStorage.removeItem("panier");//comment selectionner l'index dans la clé ?
-})
-};
+    //Panier : calculer le prix total
+//=================================
+
+function calcul (){
+    let prix = document.querySelectorAll(".prix");
+    tableauPrix = [];
+
+    for (let j = 0; j < prix.length ; j++){
+    tableauPrix.push(+prix[j].innerText); //+ pour convertir le string en nombre
+    };
+
+    var total = tableauPrix.reduce((a, b)=> a + b,0); // additionner les valeurs du tableau
+
+    document.getElementById("somme").innerHTML = total +" €";
+}
+calcul();
+
+/*
+function cleanTableau(){
+    ligne.removeChild(newTr);
+}
+
+
+function refreshTable() {
+    cleanTableau()
+    //recupPanier()
+    calcul()
+}
+
+//refreshTable()
 */
 
 }//fin de la fonction createTableau
@@ -177,10 +220,9 @@ const validVille = function(varVille){
 //validation finale de la commande
 //=================================================
 
-document.querySelector("button").addEventListener("click", (e)=>{
+document.getElementById("valid").addEventListener("click", (e)=>{
 
     e.preventDefault();
-
 
 //stocker le formulaire saisi dans le localstorage
 //=================================================
@@ -191,7 +233,6 @@ localStorage.setItem("adresse", document.getElementById("adresse").value);
 localStorage.setItem("ville", document.getElementById("ville").value);
 localStorage.setItem("Mail", document.getElementById("email").value);
 
-
 //recuperation du panier et du formulaire depuis le local storage pour les stocker dans un objet
 //===============================================================================================
 
@@ -201,46 +242,51 @@ const contact = {
     address : localStorage.getItem("adresse"),
     city : localStorage.getItem("ville"),
     email : localStorage.getItem("Mail") ,
-    //product_id : localStorage.getItem("panier_id")
 }
 
 console.log(contact);
 
-let panier = localStorage.getItem("panier_id");
-const productPanier = JSON.parse(panier);
-
-const product_id = productPanier;
-
-
-data = contact + product_id;
-console.log(data);
+let panier = localStorage.getItem("panier");
+const product = JSON.parse(panier);
+console.log(product);
 
 //envoyer l'objet sur le serveur 
 //===============================
 
-
 var xhr2 = new XMLHttpRequest();
-/*
-xhr2.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        var retour = this.response;
-        console.log(this.response)
-    
-    } else if (this.readyState == 4 && this.status == 404){
-        alert("erreur 404 !");
-    }
-};
-*/
+
 xhr2.open("POST", "http://localhost:3000/api/cameras/order", true);
+
+xhr2.onreadystatechange = function() {
+    if (xhr2.readyState === 4) {
+      var reponse = JSON.parse(xhr2.responseText);
+      
+      //console.log(reponse);
+      //console.log(reponse.orderId);
+      //console.log(reponse.products);
+      
+      var price = 0.0;
+      reponse.products.forEach(product => {
+        price += product.price;
+      });
+      
+    }
+    //location.href = "confirmation.html?order=" + reponse.orderId + "&totalPrice=" + price;
+    location.href = `confirmation.html?order=${reponse.orderId}&totalPrice=${price}`;
+    
+  };
+
 xhr2.setRequestHeader("Content-Type", "application/json");
-//xhr2.send(JSON.stringify(contact + product_id));
-//xhr2.send(JSON.stringify(data));
-xhr2.send(data);
 
+let body = {
+    contact: contact,
+    products: []
+};
 
-//localStorage.clear();
-//window.location.assign(url="confirmation.html");
+product.forEach(product => {
+    body.products.push(product._id);
+})
+xhr2.send(JSON.stringify(body));
 
+});//fin de la fonction
 
-//fin de la fonction
-});

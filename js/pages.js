@@ -37,7 +37,6 @@ xhr.onreadystatechange = function(){
     } else if (this.readyState == 4 && this.status == 404){
         alert("erreur 404 !");
     }
-
 };
 
 xhr.open("GET", "http://localhost:3000/api/cameras", true);

@@ -1,19 +1,19 @@
+//recuperer le orderId
+//=======================
+const params2 = new URLSearchParams(window.location.search).get("order");
+    console.log(params2);
 
-var xhr3 = new XMLHttpRequest();
+document.querySelector(".order").innerHTML = params2;
 
-xhr3.onreadystatechange = function(){
-    console.log(this);
-    if (this.readyState == 4 && this.status == 200) {
-        const recapCommande = (this.response);
-        console.log(recapCommande);
+//récupérer le total prix
+//=============================
+const params3 = new URLSearchParams(window.location.search).get("totalPrice");
+    console.log(params3);
 
-        
-    } else if (this.readyState == 4 && this.status == 404){
-        alert("erreur 404 !");
-    }
+document.querySelector(".totalprice").innerHTML = params3/100 + " €";
 
-};
 
-xhr3.open("GET", "http://localhost:3000/api/cameras/order", true);
-xhr3.responseType = "json";
-xhr3.send();
+//effacer le localStorage en fin de commande
+//==========================================
+
+localStorage.clear();
