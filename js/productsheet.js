@@ -4,8 +4,6 @@
 //je récupère l'Id du produit
 //=====================================
 const params = new URLSearchParams(window.location.search).get('productId')
-console.log(params);
-
 
 // je crée une nouvelle requete vers le serveur pour récupérer les infos sur le produit
 //=======================================================================================
@@ -14,11 +12,8 @@ var requetProduct = new XMLHttpRequest();
 
 requetProduct.onreadystatechange = function(){
     
-    if (this.readyState == 4 && this.status == 200) {
-        
+    if (this.readyState == 4 && this.status == 200) {   
         const found = this.response
-        console.log(found);
-        console.log(found._id);
         
 //création de la fiche avec le produit ( 2 parties )
 //==============================================================
@@ -129,7 +124,6 @@ btn_ajouter.setAttribute("role", "button");
 btn_ajouter.textContent = "Ajouter au panier";
 bouton.appendChild(btn_ajouter);
 
-
 //partie ajouter le produit au panier
 //=============================================
 
@@ -155,12 +149,11 @@ function ajoutAuPanier(){
         
         myBasket.push(objArticle);
         localStorage.setItem("panier", JSON.stringify(myBasket));
-        
+        location.reload();
     })  
+    
 }
 ajoutAuPanier();
-
-//reprise du code ======================================
 
     } else if (this.readyState == 4 && this.status == 404){
         alert("erreur 404 !");
@@ -171,3 +164,20 @@ requetProduct.open("GET", "http://localhost:3000/api/cameras/"+params, true);
 requetProduct.responseType = "json";
 requetProduct.send();
 
+//compteur de panier
+//=========================
+
+function basketCount (){
+    let basketCount1 = localStorage.getItem("panier");
+    
+    if (basketCount1){
+    
+    let basketCount2 = JSON.parse(basketCount1);
+    basketCount = +basketCount2.length;
+    document.querySelector(".basketcount").innerText =": ( " + basketCount + " ) article(s)";
+    
+    }else{
+        document.querySelector(".basketcount").innerText =": ( 0 ) article";
+    }
+};
+basketCount();

@@ -43,31 +43,22 @@ function createTableau (tab, index){
     newInput.setAttribute("type", "reset");
     newInput.setAttribute("value", "Supprimer");
     newInput.addEventListener('click', () => {
-        // Here you can work with `tab` for removing it from LocalStorage
-        // And refresh all table ;)
-        
-        //let delByIndex = +index;
-        //console.log(delByIndex);
         
         let selectBasket = localStorage.getItem("panier");
         let initialBasket = JSON.parse(selectBasket);
         
-        let delItem = initialBasket.splice(1);
-        console.log(delItem);
+        initialBasket.splice(index, 1);
         
-        const returnBasket = JSON.stringify(delItem);
+        const returnBasket = JSON.stringify(initialBasket);
         const newBasket = localStorage.setItem("panier", returnBasket);
         
         location.reload();
-        
-        
-        //refreshTable()
+           
     })
 
     newTd3.appendChild(newInput);
 
-
-    //Panier : calculer le prix total
+//Panier : calculer le prix total
 //=================================
 
 function calcul (){
@@ -84,21 +75,6 @@ function calcul (){
 }
 calcul();
 
-/*
-function cleanTableau(){
-    ligne.removeChild(newTr);
-}
-
-
-function refreshTable() {
-    cleanTableau()
-    //recupPanier()
-    calcul()
-}
-
-//refreshTable()
-*/
-
 }//fin de la fonction createTableau
 
 //validation mail
@@ -114,16 +90,18 @@ const validEmail = function(varEmail){
     //ligne de test
     let testEmail = emailRegExp.test(varEmail.value)
     let validt = document.getElementById("validtext");
+    
 
     if (testEmail){
         validt.textContent = "Adresse mail valide";
         validt.style.color = "green";
+        return true;
     }else {
         validt.textContent = "Adresse mail non valide";
         validt.style.color = "red";
+        return false;
     } 
 };
-
 
 //validation prenom
 //======================================================
@@ -133,20 +111,24 @@ form2.prenom.addEventListener("change", function(){
 });
 
 const validPrenom = function(varPrenom){
-    let prenomRegExp = new RegExp("^[a-zA-ZéèîïÎÏ][a-zéèêçàîï]+([-/s][a-zA-ZéèîïÎÏ][a-zéèêçàîï]+)?", "g");
+    
+    let prenomRegExp = new RegExp("^(?=.{1,70}$)[a-zA-ZéèîïÎÏéèêçàîïë]+(?:[-'_ ][a-zA-ZéèîïÎÏéèêçàîïë]+)*$");
 
     //ligne de test
     let testPrenom = prenomRegExp.test(varPrenom.value)
     let validPrenom = document.getElementById("valideprenom");
-
+    
     if (testPrenom){
         valideprenom.textContent = "Prenom valide";
         valideprenom.style.color = "green";
+        return true;
     }else {
         valideprenom.textContent = "Prenom non valide";
         valideprenom.style.color = "red";
+        return false;
     } 
 };
+
 
 //validation nom
 //======================================================
@@ -156,7 +138,7 @@ form3.nom.addEventListener("change", function(){
 });
 
 const validNom = function(varNom){
-    let nomRegExp = new RegExp("^[a-zA-ZéèîïÎÏ][a-zéèêçàîï]+([-/s][a-zA-ZéèîïÎÏ][a-zéèêçàîï]+)?", "g");
+    let nomRegExp = new RegExp("^(?=.{1,70}$)[a-zA-ZéèîïÎÏéèêçàîïë]+(?:[-'_ ][a-zA-ZéèîïÎÏéèêçàîïë]+)*$");
 
     //ligne de test
     let testNom = nomRegExp.test(varNom.value)
@@ -165,9 +147,11 @@ const validNom = function(varNom){
     if (testNom){
         validenom.textContent = "Nom de famille valide";
         validenom.style.color = "green";
+        return true;
     }else {
         validenom.textContent = "Nom de famille non valide";
         validenom.style.color = "red";
+        return false;
     } 
 };
 
@@ -179,7 +163,8 @@ form4.adresse.addEventListener("change", function(){
 });
 
 const validAdresse = function(varAdresse){
-    let adresseRegExp = new RegExp("[0-9a-zA-Z]+[a-zA-ZéèîïÎÏ/s]", "g");
+    
+    let adresseRegExp = new RegExp("^(?=.{1,70}$)[0-9a-zA-ZéèîïÎÏéèêçàîïë]+(?:[-'_ ][0-9a-zA-ZéèîïÎÏéèêçàîïë]+)*$");
 
     //ligne de test
     let testAdresse = adresseRegExp.test(varAdresse.value)
@@ -188,9 +173,11 @@ const validAdresse = function(varAdresse){
     if (testAdresse){
         valideadresse.textContent = "Adresse valide";
         valideadresse.style.color = "green";
+        return true;
     }else {
         valideadresse.textContent = "Adresse non valide";
         valideadresse.style.color = "red";
+        return false;
     } 
 };
 
@@ -202,8 +189,9 @@ form6.ville.addEventListener("change", function(){
 });
 
 const validVille = function(varVille){
-    let villeRegExp = new RegExp("^[a-zA-ZéèîïÎÏéèêçàîï]", "g");
-
+    
+    let villeRegExp = new RegExp("^(?=.{1,70}$)[a-zA-ZéèîïÎÏéèêçàîïë]+(?:[-'_ ][a-zA-ZéèîïÎÏéèêçàîïë]+)*$");
+    
     //ligne de test
     let testVille = villeRegExp.test(varVille.value)
     let validVille = document.getElementById("valideville");
@@ -211,19 +199,26 @@ const validVille = function(varVille){
     if (testVille){
         valideville.textContent = "Nom de ville valide";
         valideville.style.color = "green";
+        return true;
     }else {
         valideville.textContent = "Nom de ville non valide";
         valideville.style.color = "red";
+        return false;
     } 
 };
 
 //validation finale de la commande
 //=================================================
 
-document.getElementById("valid").addEventListener("click", (e)=>{
+form.addEventListener("submit", (e)=>{
 
     e.preventDefault();
 
+//condition si champ valid !!
+//=============================
+if(validPrenom(form2.prenom) && validNom(form3.nom) && validAdresse(form4.adresse) && validVille(form6.ville) && validEmail(form.email)){
+
+    
 //stocker le formulaire saisi dans le localstorage
 //=================================================
 
@@ -244,12 +239,9 @@ const contact = {
     email : localStorage.getItem("Mail") ,
 }
 
-console.log(contact);
-
 let panier = localStorage.getItem("panier");
 const product = JSON.parse(panier);
-console.log(product);
-
+    
 //envoyer l'objet sur le serveur 
 //===============================
 
@@ -261,17 +253,13 @@ xhr2.onreadystatechange = function() {
     if (xhr2.readyState === 4) {
       var reponse = JSON.parse(xhr2.responseText);
       
-      //console.log(reponse);
-      //console.log(reponse.orderId);
-      //console.log(reponse.products);
-      
       var price = 0.0;
       reponse.products.forEach(product => {
         price += product.price;
       });
       
     }
-    //location.href = "confirmation.html?order=" + reponse.orderId + "&totalPrice=" + price;
+    
     location.href = `confirmation.html?order=${reponse.orderId}&totalPrice=${price}`;
     
   };
@@ -288,5 +276,11 @@ product.forEach(product => {
 })
 xhr2.send(JSON.stringify(body));
 
-});//fin de la fonction
+}else{
+document.getElementById("alert").innerText = "Merci de renseigner un champ valide !";
+
+    }//fin de la condition
+
+});//fin de la function submit
+
 

@@ -10,11 +10,9 @@
 }
 
 .change{
-color:blue;
-text-align:center;
-background-image: url(images/logo_orinoco.png);
-background-size: contain; /*definit la taille de l'image d'arrière plan*/
-background-repeat: no-repeat;
+    background-image: url(images/logo_orinoco.png);
+    background-size: contain; /*definit la taille de l'image d'arrière plan*/
+    background-repeat: no-repeat;
 }
 
 .panier{
@@ -27,33 +25,14 @@ background-repeat: no-repeat;
     font-size: 1.8rem;
 }
 
-.bouton{
-    margin-left: 1.6rem;
-    margin-top: 2rem;
-}
-
-.bouton a {
-    display:block;
-    width:170px;
-    line-height:45px;
-    text-align:center;
-    background-color: rgb(40, 167, 57);
-    color:white;
-    font-weight: bold;
-    text-decoration:none;
-    border-radius: 10px;
-    }
-    .bouton a:hover {
-    background-color: rgb(40, 201, 48);
-    box-shadow: 3px 3px 6px rgb(99, 96, 96);
-
-    }
-
 .page{
-min-height: 650px;
-
+    min-height: 650px;
 }
 
+.bandeau-gauche{
+    background-color: rgb(241, 234, 234);
+    height: 95%;
+}
 
 @media all and (max-width: 420px){
 /*Breakpoint mobile*/

@@ -19,10 +19,8 @@ xhr.onreadystatechange = function(){
     console.log(this);
     if (this.readyState == 4 && this.status == 200) {
         const lesCameras = (this.response);
-        console.log(lesCameras);
 
         let camerasUnparsed = this.response;
-
         
         var cameras = [];
         camerasUnparsed.forEach ( aCameraUnparsed => {
@@ -43,16 +41,11 @@ xhr.open("GET", "http://localhost:3000/api/cameras", true);
 xhr.responseType = "json";
 xhr.send();
 
-
 //fonction pour créer la page avec toutes les cameras
 //======================================================
 
 function createFiche(ref) {
 
-    document.getElementById("camera").addEventListener("click", function(event){
-
-    event.preventDefault();
-    
     const newFiche = document.createElement("div");
     newFiche.classList = "col-lg-4 col-md-6 mb-4";
     let fiche = document.getElementById("pageProduit");
@@ -62,15 +55,11 @@ function createFiche(ref) {
     newCard.classList = "card h-100";
     newFiche.appendChild(newCard);
 
-    const lienA = document.createElement("a");
-    lienA.href = "ficheproduit.html?productId=" + ref.id;
-    newCard.appendChild(lienA);
-
     const imageCard = document.createElement("img");
     imageCard.classList = "card-img-top";
     imageCard.src = ref.imageUrl;
     imageCard.setAttribute("alt", ref.name);
-    lienA.appendChild(imageCard);
+    newCard.appendChild(imageCard);
 
     const newCardBody = document.createElement("div");
     newCardBody.classList = "card-body";
@@ -82,7 +71,7 @@ function createFiche(ref) {
     newCardBody.appendChild(titreH4);
 
     const prixH5 = document.createElement("h5");
-    prixH5.innerText = ref.price + "  €";
+    prixH5.innerText = ref.price/100 + "  €";
     newCardBody.appendChild(prixH5);
 
     const small = document.createElement("small");
@@ -95,13 +84,29 @@ function createFiche(ref) {
     newCard.appendChild(newCardFooter);
 
     const lienB = document.createElement("a");
-    lienB.classList = "btn btn-primary";
-    lienB.href = "ficheproduit.html?productId=" + ref.id; // en utilisant URLSeachParams
+    lienB.classList = "btn btn-primary stretched-link";
+    lienB.href = "productsheet.html?productId=" + ref.id; // en utilisant URLSeachParams
     lienB.setAttribute("role", "button");
     lienB.textContent = "Voir le produit";
     newCardFooter.appendChild(lienB);
 
     return newFiche;
-
-    })
 };
+
+//compteur de panier
+//=========================
+
+function basketCount (){
+    let basketCount1 = localStorage.getItem("panier");
+    
+    if (basketCount1){
+    
+    let basketCount2 = JSON.parse(basketCount1);
+    basketCount = +basketCount2.length;
+    document.querySelector(".basketcount").innerText =": ( " + basketCount + " ) article(s)";
+    
+    }else{
+        document.querySelector(".basketcount").innerText =": ( 0 ) article";
+    }  
+};
+basketCount();
