@@ -44,7 +44,7 @@ titreH4_P.innerText = found.name;
 newCardBodyP.appendChild(titreH4_P);
 
 const prixH5_P = document.createElement("h5");
-prixH5_P.innerText = found.price + " €";
+prixH5_P.innerText = found.price/100 + " €";
 newCardBodyP.appendChild(prixH5_P);
 
 const newCardFooterP = document.createElement("div");
@@ -127,6 +127,7 @@ bouton.appendChild(btn_ajouter);
 //partie ajouter le produit au panier
 //=============================================
 
+
 function ajoutAuPanier(){
 
     document.querySelector(".btnAjout").addEventListener("click", function (e){
@@ -150,9 +151,9 @@ function ajoutAuPanier(){
         myBasket.push(objArticle);
         localStorage.setItem("panier", JSON.stringify(myBasket));
         location.reload();
-    })  
-    
+    })    
 }
+
 ajoutAuPanier();
 
     } else if (this.readyState == 4 && this.status == 404){

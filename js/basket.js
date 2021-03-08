@@ -52,8 +52,7 @@ function createTableau (tab, index){
         const returnBasket = JSON.stringify(initialBasket);
         const newBasket = localStorage.setItem("panier", returnBasket);
         
-        location.reload();
-           
+        location.reload();     
     })
 
     newTd3.appendChild(newInput);
