@@ -13,33 +13,47 @@ class Cam {
     }
 }
 
-var xhr = new XMLHttpRequest();
+// Créer une nouvelle promesse avec le constructeur Promise () qui a comme argument resolve et reject
 
-xhr.onreadystatechange = function(){
-    console.log(this);
-    if (this.readyState == 4 && this.status == 200) {
-        const lesCameras = (this.response);
+function getProducts(){
+    return new Promise(function(resolve, reject){
 
-        let camerasUnparsed = this.response;
-        
-        var cameras = [];
-        camerasUnparsed.forEach ( aCameraUnparsed => {
-            const cam = new Cam(aCameraUnparsed.name, aCameraUnparsed.price, aCameraUnparsed.description, aCameraUnparsed.imageUrl, aCameraUnparsed._id); //bien mettre le_ avant id
-            cameras.push(cam)
-        })
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://localhost:3000/api/cameras", true);
+        xhr.responseType = "json";
 
-        cameras.forEach( ref => {
-            createFiche(ref);
-        })
-        
-    } else if (this.readyState == 4 && this.status == 404){
-        alert("erreur 404 !");
-    }
+        xhr.onreadystatechange = function(){
+            console.log(this);
+            
+            if (this.readyState == 4 && this.status == 200) {
+                resolve(xhr.response);
+                
+            } else if (this.readyState == 4 && this.status == 404){
+                reject(Error('erreur 404' + request.statusText)); 
+            }
+        }   
+        xhr.send();
+    })
 };
 
-xhr.open("GET", "http://localhost:3000/api/cameras", true);
-xhr.responseType = "json";
-xhr.send();
+getProducts("http://localhost:3000/api/cameras").then( response => {
+
+    const lesCameras = response;
+    let camerasUnparsed = response;
+            
+    var cameras = [];
+    camerasUnparsed.forEach ( aCameraUnparsed => {
+    const cam = new Cam(aCameraUnparsed.name, aCameraUnparsed.price, aCameraUnparsed.description, aCameraUnparsed.imageUrl, aCameraUnparsed._id); //bien mettre le_ avant id
+    cameras.push(cam)
+    })
+
+    cameras.forEach( ref => {
+    createFiche(ref);
+    })
+    
+}).catch( error =>{
+    console.log(error);
+})
 
 //fonction pour créer la page avec toutes les cameras
 //======================================================
@@ -98,15 +112,19 @@ function createFiche(ref) {
 
 function basketCount (){
     let basketCount1 = localStorage.getItem("panier");
-    
-    if (basketCount1){
-    
     let basketCount2 = JSON.parse(basketCount1);
     basketCount = +basketCount2.length;
-    document.querySelector(".basketcount").innerText =": ( " + basketCount + " ) article(s)";
     
-    }else{
-        document.querySelector(".basketcount").innerText =": ( 0 ) article";
+    if (basketCount > 1){
+    
+    document.querySelector(".basketcount").innerText =": " + basketCount + " articles";
+    
+    }else if(basketCount == 1){
+        
+        document.querySelector(".basketcount").innerText =": " + basketCount + " article";
+
+    }else if (basketCount == 0) {
+        document.querySelector(".basketcount").innerText =": 0 article";
     }  
 };
 basketCount();

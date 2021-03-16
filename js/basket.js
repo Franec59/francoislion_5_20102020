@@ -14,6 +14,26 @@ function recupPanier(){
 }
 recupPanier();
 
+//calcul du prix total du panier
+//=====================================
+function calcul(){
+
+    let getPrice = localStorage.getItem("panier");
+    let getPrice2 = JSON.parse(getPrice);
+    
+    totalBasket = []
+        
+        getPrice2.forEach(allPrice => {
+        getPrice3 = +allPrice.price;
+        totalBasket.push(getPrice3)
+        console.log(totalBasket);
+        var totalBasket2 = totalBasket.reduce((a, b)=> a + b,0); // additionner les valeurs du tableau
+    
+        document.getElementById("somme").innerHTML = totalBasket2/100 +" €";
+    
+        })
+}//fin de la fonction calcul
+
 function createTableau (tab, index){
 
     const newTr = document.createElement("tr");
@@ -32,7 +52,7 @@ function createTableau (tab, index){
 
     const newTd2 = document.createElement("td");
     newTd2.classList = "prix";
-    newTd2.innerHTML = tab.price/100;
+    newTd2.innerHTML = tab.price/100 + " €";
     newTr.appendChild(newTd2);
 
     const newTd3 = document.createElement("td");
@@ -57,22 +77,7 @@ function createTableau (tab, index){
 
     newTd3.appendChild(newInput);
 
-//Panier : calculer le prix total
-//=================================
-
-function calcul (){
-    let prix = document.querySelectorAll(".prix");
-    tableauPrix = [];
-
-    for (let j = 0; j < prix.length ; j++){
-    tableauPrix.push(+prix[j].innerText); //+ pour convertir le string en nombre
-    };
-
-    var total = tableauPrix.reduce((a, b)=> a + b,0); // additionner les valeurs du tableau
-
-    document.getElementById("somme").innerHTML = total +" €";
-}
-calcul();
+    calcul();
 
 }//fin de la fonction createTableau
 
@@ -217,7 +222,6 @@ form.addEventListener("submit", (e)=>{
 //=============================
 if(validPrenom(form2.prenom) && validNom(form3.nom) && validAdresse(form4.adresse) && validVille(form6.ville) && validEmail(form.email)){
 
-    
 //stocker le formulaire saisi dans le localstorage
 //=================================================
 
@@ -240,44 +244,57 @@ const contact = {
 
 let panier = localStorage.getItem("panier");
 const product = JSON.parse(panier);
+
+//envoyer l'objet sur le serveur : promise & requete
+//==================================================
+
+function promisePost(url){
+    return new Promise(function(resolve, reject){
+
+    var xhr2 = new XMLHttpRequest();
+    xhr2.open("POST", "http://localhost:3000/api/cameras/order", true);
+    xhr2.setRequestHeader("Content-Type", "application/json");
+
+    xhr2.onreadystatechange = function() {
     
-//envoyer l'objet sur le serveur 
-//===============================
-
-var xhr2 = new XMLHttpRequest();
-
-xhr2.open("POST", "http://localhost:3000/api/cameras/order", true);
-
-xhr2.onreadystatechange = function() {
-    if (xhr2.readyState === 4) {
-      var reponse = JSON.parse(xhr2.responseText);
+        if (xhr2.readyState === 4) {
+            resolve(xhr2.response);
+                
+        } else if (this.readyState == 4 && this.status == 404){
+            reject(Error('erreur 404' + request.statusText));         
+            }
+        }
       
-      var price = 0.0;
-      reponse.products.forEach(product => {
-        price += product.price;
-      });
-      
-    }
-    
-    location.href = `confirmation.html?order=${reponse.orderId}&totalPrice=${price}`;
-    
-  };
-
-xhr2.setRequestHeader("Content-Type", "application/json");
+    xhr2.send(JSON.stringify(body));
+    })//fin de la fonction Promise 1ere partie
+};//fin de la fonction globale
 
 let body = {
-    contact: contact,
-    products: []
-};
+        contact: contact,
+        products: []
+    };
 
-product.forEach(product => {
-    body.products.push(product._id);
-})
-xhr2.send(JSON.stringify(body));
+    product.forEach(product => {
+        body.products.push(product._id);
+    })     
+
+promisePost("http://localhost:3000/api/cameras/order").then( response => {
+
+    var reponse = JSON.parse(response);
+      
+    var price = 0.0;
+    reponse.products.forEach(product => {
+      price += product.price; 
+    });
+  
+    location.href = `confirmation.html?order=${reponse.orderId}&totalPrice=${price}`;
+
+}).catch( error =>{
+    console.log(error);
+})//fin de la promise 2ème partie
 
 }else{
 document.getElementById("alert").innerText = "Merci de renseigner un champ valide !";
-
     }//fin de la condition
 
 });//fin de la function submit
