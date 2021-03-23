@@ -111,6 +111,7 @@ function createFiche(ref) {
 //=========================
 
 function basketCount (){
+    
     let basketCount1 = localStorage.getItem("panier");
     let basketCount2 = JSON.parse(basketCount1);
     basketCount = +basketCount2.length;
@@ -123,7 +124,7 @@ function basketCount (){
         
         document.querySelector(".basketcount").innerText =": " + basketCount + " article";
 
-    }else if (basketCount == 0) {
+    }else if (basketCount == 0 ) {
         document.querySelector(".basketcount").innerText =": 0 article";
     }  
 };

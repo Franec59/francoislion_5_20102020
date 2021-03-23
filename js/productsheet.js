@@ -101,12 +101,14 @@ promiseGetId("http://localhost:3000/api/cameras/").then( response => {
     newCardBodyP2.appendChild(description);
 
     const btn_option = document.createElement("select");
-    btn_option.classlist = "form-select ml-4";
+    btn_option.setAttribute("required", "required"); 
+    btn_option.classlist = "form-select ml-4 optin";
     btn_option.classList = "mt-5";
     newCardBodyP2.appendChild(btn_option);
 
     const option1 = document.createElement("option");
     option1.setAttribute("selected", "selected")
+    option1.setAttribute("value", "")
     option1.innerText = "Choississez vos options"
     btn_option.appendChild(option1);
 
@@ -144,6 +146,15 @@ promiseGetId("http://localhost:3000/api/cameras/").then( response => {
     btn_ajouter.textContent = "Ajouter au panier";
     bouton.appendChild(btn_ajouter);
 
+    const textAlert = document.createElement("h5");
+    textAlert.classList = "textalert text-danger mt-3";
+    textAlert.innerText = "";
+    newCardBodyP2.appendChild(textAlert);
+
+    //selectionner le menu déroulant 
+    //==============================
+    const optionSelected = document.querySelector( "select" );
+    
 //partie ajouter le produit au panier
 //=============================================
 
@@ -153,6 +164,10 @@ function ajoutAuPanier(){
         
         e.preventDefault();
         
+        //condition : option du produit doit être obligatoirement selectionnée
+        //=======================================================================
+        if(optionSelected.checkValidity()) {
+
         //panier
         let panierStringified = localStorage.getItem("panier");
         var myBasket = [] 
@@ -170,6 +185,10 @@ function ajoutAuPanier(){
         myBasket.push(objArticle);
         localStorage.setItem("panier", JSON.stringify(myBasket));
         location.reload();
+        
+        }else{
+            document.querySelector(".textalert").innerText = "Vous devez sélectionner une option pour ajouter votre produit au panier";
+        }
     })    
 }
 
